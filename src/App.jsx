@@ -3,7 +3,6 @@ function App() {
 
   return (
     <>
-      <h1>Hlw Dev</h1>
     </>
   )
 }
