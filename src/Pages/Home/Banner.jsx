@@ -7,7 +7,7 @@ import slide3 from '../../assets/banner/banner3.png';
 
 const Banner = () => {
     return (
-            <Carousel autoPlay={true} infiniteLoop={true}>
+            <Carousel showThumbs={false} autoPlay={true} infiniteLoop={true}>
                 <div>
                     <img className='object-cover' src={slide1} />
                 </div>
