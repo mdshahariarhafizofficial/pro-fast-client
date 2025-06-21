@@ -7,23 +7,19 @@ const Navbar = () => {
   const navLinks = <>
             <li className="mr-4">
               <NavLink to=''
-              className={({isActive}) => isActive ? 'text-primary font-bold border-b-2 rounded-none': ''}
+              className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
               >Home</NavLink>
             </li>
             <li className="mr-4">
               <NavLink to='/services'
-              className={({isActive}) => isActive ? 'text-primary font-bold border-b-2 rounded-none': ''}
+              className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
               >Services</NavLink>
             </li>
             <li className="mr-4 btn md:hidden">
-              <NavLink to='/services'
-              className={({isActive}) => isActive ? 'text-primary font-bold border-b-2 rounded-none': ''}
-              >Sing In</NavLink>
+              <NavLink to='/services'>Sing In</NavLink>
             </li>
-            <li className="mr-4 btn btn-primary md:hidden">
-              <NavLink to='/services'
-              className={({isActive}) => isActive ? 'text-primary font-bold border-b-2 rounded-none': ''}
-              >
+            <li className="mr-4 btn btn-primary md:hidden text-secondary font-extrabold">
+              <NavLink to='/services'>
                 <MdDirectionsBike size={25}></MdDirectionsBike>                
                 Be a rider</NavLink>
             </li>
@@ -70,7 +66,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-end gap-3">
           <button className="hidden md:flex btn px-6 py-6">Sing In</button>
-          <button className="hidden md:flex btn btn-primary py-6">
+          <button className="hidden md:flex btn btn-primary text-secondary font-bold py-6">
             <MdDirectionsBike size={25}></MdDirectionsBike>
             Be a rider</button>
           <button className="hidden md:block bg-black p-3 rounded-full">

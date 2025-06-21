@@ -9,10 +9,14 @@ const Root = () => {
                 <Navbar></Navbar>
             </header>
             <main>
-                <Outlet></Outlet>
+                <div className='md:max-w-11/12 mx-auto'>
+                    <Outlet></Outlet>
+                </div>
             </main>
             <footer>
-
+                <div className='md:max-w-11/12 mx-auto bg-[#0B0B0B]'>
+                    
+                </div>
             </footer>
         </>
     );
