@@ -6,12 +6,12 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlineArrowCircleLeft
 } from "react-icons/hi";
-
+import { TbTruckDelivery } from "react-icons/tb";
 const services = [
   {
     title: "Express & Standard Delivery",
     desc: `We deliver parcels within 24–72 hours in Dhaka, Chittagong, Sylhet, Khulna, and Rajshahi. \nExpress delivery available in Dhaka within 4–6 hours from pick-up to drop-off.`,
-    icon: HiOutlineLightningBolt,
+    icon: TbTruckDelivery,
   },
   {
     title: "Nationwide Delivery",
