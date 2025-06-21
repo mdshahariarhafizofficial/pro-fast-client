@@ -22,7 +22,7 @@ const logos = [
 
 const BrandCarousel = () => {
   return (
-    <div className="mb-20 md:px-20">
+    <div className="mb-20 lg:px-24">
       <h2 className="text-center text-xl md:text-2xl font-bold text-secondary mb-10">
         We've helped thousands of sales teams
       </h2>

@@ -4,6 +4,7 @@ import HowItWorks from './HowItWorks';
 import OurServices from './OurServices';
 import BrandCarousel from './BrandCarousel';
 import FeatureCards from './FeatureCards';
+import HeroPrioritySection from './HeroPrioritySection';
 
 const Home = () => {
     return (
@@ -13,6 +14,7 @@ const Home = () => {
             <OurServices></OurServices>
             <BrandCarousel></BrandCarousel>
             <FeatureCards></FeatureCards>
+            <HeroPrioritySection></HeroPrioritySection>
         </>
     );
 };

@@ -28,7 +28,7 @@ const features = [
 
 export default function FeatureCards() {
   return (
-    <div className="mb-20 pb-20 px-4 md:mx-24 border-b-2 border-dashed border-secondary">
+    <div className="mb-20 pb-20 px-4 lg:mx-24 border-b-2 border-dashed border-secondary">
       <div className="space-y-6 max-w-6xl mx-auto">
         {features.map((feature, index) => (
           <div
