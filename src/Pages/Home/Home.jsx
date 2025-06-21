@@ -5,6 +5,7 @@ import OurServices from './OurServices';
 import BrandCarousel from './BrandCarousel';
 import FeatureCards from './FeatureCards';
 import HeroPrioritySection from './HeroPrioritySection';
+import Faq from './Faq';
 
 const Home = () => {
     return (
@@ -15,6 +16,7 @@ const Home = () => {
             <BrandCarousel></BrandCarousel>
             <FeatureCards></FeatureCards>
             <HeroPrioritySection></HeroPrioritySection>
+            <Faq></Faq>
         </>
     );
 };

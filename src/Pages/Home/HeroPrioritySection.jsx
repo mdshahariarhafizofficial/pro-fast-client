@@ -4,10 +4,10 @@ import BgImage from "../../assets/banner/banner4.png"; // Full background image 
 export default function HeroPrioritySection() {
   return (
     <div
-      className="no-repeat bg-cover rounded-[2rem] my-10 mx-4 lg:mx-24"
+      className="no-repeat bg-cover rounded-[2rem] my-10 mx-4 lg:mx-24 py-10"
       style={{ backgroundImage: `url(${BgImage})` }}
     >
-      <div className="p-8 md:p-12 text-white bg-[#01332d]/90 rounded-[2rem]">
+      <div className="p-8 md:p-12 text-white rounded-[2rem]">
         <div className="max-w-xl space-y-4">
           <h2 className="text-2xl md:text-3xl font-bold leading-snug">
             Merchant and Customer Satisfaction <br /> is Our First Priority
