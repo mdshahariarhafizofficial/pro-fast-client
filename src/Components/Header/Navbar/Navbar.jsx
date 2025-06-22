@@ -19,7 +19,7 @@ const Navbar = () => {
               <NavLink className='btn' to='/login'>Sing In</NavLink>
             </li>
             <li className="mr-4 md:hidden">
-              <NavLink className='btn btn-primary text-secondary font-extrabold' to='/services'>
+              <NavLink className='btn btn-primary text-secondary font-extrabold' to='/login'>
                 <MdDirectionsBike size={25}></MdDirectionsBike>                
                 Be a rider</NavLink>
             </li>

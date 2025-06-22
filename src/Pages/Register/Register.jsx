@@ -1,26 +1,17 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React from 'react';
 import { Link } from "react-router";
 import styled from "styled-components";
-
-const Login = () => {
-  const { register, handleSubmit, formState: {errors}, } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-    
-  };
-
-  return (
+const Register = () => {
+    return (
     <div>
         {/* Form */}
         <StyledWrapper>
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto form">
+        <form className="max-w-lg mx-auto form">
 
             <div>            
                 {/* Welcome Text */}
-                <h2 className="text-4xl font-extrabold text-gray-900 mb-2">Welcome Back</h2>
-                <p className="text-gray-600 mb-6 font-bold">Login with Profast</p>
+                <h2 className="text-4xl font-extrabold text-gray-900 mb-2">Create an Account</h2>
+                <p className="text-gray-600 mb-6 font-bold">Register with Profast</p>
             </div>
 
             <div className="flex-column">
@@ -38,12 +29,8 @@ const Login = () => {
                 </g>
             </svg>
             <input 
-            { ...register('email', { required: true }) }
             placeholder="Enter your Email" className="input" type="email" />
             </div>
-            { errors.email?.type === 'required' && (
-              <p className="text-red-500" role="alert">*email is required</p>
-            ) }
             <div className="flex-column">
             <label>Password </label>
             </div>
@@ -58,29 +45,17 @@ const Login = () => {
                 <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0" />
             </svg>
             <input
-                { ...register('password', {required: true, minLength: 6 }) }
                 placeholder="Enter your Password"
                 className="input"
                 type="password"
             />
             </div>
-            {
-              errors.password?.type === 'required' && (
-                <p className="text-red-500" role="alert">password is required</p>
-              )
-            }         
-            {
-              errors.password?.type === 'minLength' && (
-                <p className="text-red-500" role="alert">password at least 6 character</p>
-              )
-            }
-
             <div>
             <span className="span underline text-secondary font-semibold">Forgot password?</span>
             </div>
-            <button type="submit" className="button-submit bg-primary">Login</button>
+            <button type="submit" className="button-submit bg-primary">Register</button>
             <p className="p">
-            Don't have an account? <Link to='/register' className="text-lime-600">Register</Link>
+            Already have an account? <Link to='/login' className="text-lime-600">Login</Link>
             </p>
             <div className="divider">OR</div>
             <div className="flex-row">
@@ -122,13 +97,13 @@ const Login = () => {
                     style={{ fill: "#F14336" }}
                 />
                 </svg>
-                Login With Google
+                Register With Google
             </button>
             </div>
         </form>
         </StyledWrapper>
     </div>
-  );
+    );
 };
 
 const StyledWrapper = styled.div`
@@ -238,4 +213,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default Login;
+export default Register;
