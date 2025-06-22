@@ -1,6 +1,6 @@
 import React from "react";
 import logo from '../../../assets/logoblack.png';
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { MdArrowOutward, MdDirectionsBike } from "react-icons/md";
 
 const Navbar = () => {
@@ -15,11 +15,11 @@ const Navbar = () => {
               className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
               >Services</NavLink>
             </li>
-            <li className="mr-4 btn md:hidden">
-              <NavLink to='/services'>Sing In</NavLink>
+            <li className="mr-4 md:hidden">
+              <NavLink className='btn' to='/login'>Sing In</NavLink>
             </li>
-            <li className="mr-4 btn btn-primary md:hidden text-secondary font-extrabold">
-              <NavLink to='/services'>
+            <li className="mr-4 md:hidden">
+              <NavLink className='btn btn-primary text-secondary font-extrabold' to='/services'>
                 <MdDirectionsBike size={25}></MdDirectionsBike>                
                 Be a rider</NavLink>
             </li>
@@ -65,7 +65,9 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end gap-3">
-          <button className="hidden md:flex btn px-6 py-6">Sing In</button>
+          <Link to='/login'>
+            <button className="hidden md:flex btn px-6 py-6">Sing In</button>
+          </Link>
           <button className="hidden md:flex btn btn-primary text-secondary font-bold py-6">
             <MdDirectionsBike size={25}></MdDirectionsBike>
             Be a rider</button>

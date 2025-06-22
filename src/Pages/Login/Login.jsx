@@ -1,13 +1,21 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import styled from "styled-components";
 
 const Login = () => {
+  const { register, handleSubmit, formState: {errors}, } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    
+  };
+
   return (
     <div>
         {/* Form */}
         <StyledWrapper>
-        <form className="max-w-lg mx-auto form">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto form">
 
             <div>            
                 {/* Welcome Text */}
@@ -29,8 +37,13 @@ const Login = () => {
                 <path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z" />
                 </g>
             </svg>
-            <input placeholder="Enter your Email" className="input" type="text" />
+            <input 
+            { ...register('email', { required: true }) }
+            placeholder="Enter your Email" className="input" type="email" />
             </div>
+            { errors.email?.type === 'required' && (
+              <p className="text-red-500" role="alert">*email is required</p>
+            ) }
             <div className="flex-column">
             <label>Password </label>
             </div>
@@ -45,15 +58,27 @@ const Login = () => {
                 <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0" />
             </svg>
             <input
+                { ...register('password', {required: true, minLength: 6 }) }
                 placeholder="Enter your Password"
                 className="input"
                 type="password"
             />
             </div>
+            {
+              errors.password?.type === 'required' && (
+                <p className="text-red-500" role="alert">password is required</p>
+              )
+            }         
+            {
+              errors.password?.type === 'minLength' && (
+                <p className="text-red-500" role="alert">password at least 6 character</p>
+              )
+            }
+
             <div>
             <span className="span underline text-secondary font-semibold">Forgot password?</span>
             </div>
-            <button className="button-submit bg-primary">Login</button>
+            <button type="submit" className="button-submit bg-primary">Login</button>
             <p className="p">
             Don't have an account? <Link to='register' className="text-lime-600">Register</Link>
             </p>
