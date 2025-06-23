@@ -4,11 +4,25 @@ import { HiOutlineUserCircle } from 'react-icons/hi';
 import { PiUserCircleCheckFill } from 'react-icons/pi';
 import { Link } from "react-router";
 import styled from "styled-components";
+import useAuth from '../../Hooks/UseAuth';
+import toast from 'react-hot-toast';
 const Register = () => {
+    const {createUser} = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm(); 
 
     const onSubmit = data => {
       console.log(data);
+      createUser(data.email, data.password)
+      .then(result => {
+        if (result.user) {
+         toast.success('Account Created SuccessFul!') 
+        }
+      })
+      .catch(error => {
+        if (error) {
+          toast.error("Email already in use")
+        };
+      });
       
     }
 
