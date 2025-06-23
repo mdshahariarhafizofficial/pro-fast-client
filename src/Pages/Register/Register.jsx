@@ -1,19 +1,48 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { HiOutlineUserCircle } from 'react-icons/hi';
+import { PiUserCircleCheckFill } from 'react-icons/pi';
 import { Link } from "react-router";
 import styled from "styled-components";
 const Register = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm(); 
+
+    const onSubmit = data => {
+      console.log(data);
+      
+    }
+
     return (
     <div>
         {/* Form */}
         <StyledWrapper>
-        <form className="max-w-lg mx-auto form">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto form">
 
-            <div>            
+            <div className='mb-3'>            
                 {/* Welcome Text */}
                 <h2 className="text-4xl font-extrabold text-gray-900 mb-2">Create an Account</h2>
-                <p className="text-gray-600 mb-6 font-bold">Register with Profast</p>
+                <p className="text-gray-600 font-bold">Register with Profast</p>
+                <PiUserCircleCheckFill size={50} color='#caeb66' />
             </div>
 
+            {/* Name */}
+            <div className="flex-column">
+            <label>Name </label>
+            </div>
+            <div className="inputForm">
+            <HiOutlineUserCircle size={22} />
+            <input 
+            {...register('name', { required: true })}
+            placeholder="Enter your Name" className="input" type="text" />
+            </div>
+            {
+              errors.name?.type === 'required' && (
+                <p role='alert' className='text-red-500 text-sm'>*Name is required</p>
+              )
+            }            
+
+
+            {/* Email */}
             <div className="flex-column">
             <label>Email </label>
             </div>
@@ -29,8 +58,16 @@ const Register = () => {
                 </g>
             </svg>
             <input 
+            {...register('email', { required: true })}
             placeholder="Enter your Email" className="input" type="email" />
             </div>
+            {
+              errors.email?.type === 'required' && (
+                <p role='alert' className='text-sm text-red-500'>*email is required</p>
+              )
+            }
+
+            {/* Password */}
             <div className="flex-column">
             <label>Password </label>
             </div>
@@ -45,13 +82,23 @@ const Register = () => {
                 <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0" />
             </svg>
             <input
+                {...register('password', { required: true, minLength: 6 })}
                 placeholder="Enter your Password"
                 className="input"
                 type="password"
             />
             </div>
             <div>
-            <span className="span underline text-secondary font-semibold">Forgot password?</span>
+              {
+                errors.password?.type === 'required' && (
+                  <p role='alert' className='text-sm text-red-500'>*password is required</p>
+                )
+              }
+              {
+                errors.password?.type === 'minLength' && (
+                  <p role='alert' className='text-sm text-red-500'>*password at least 6 character</p>
+                )
+              }
             </div>
             <button type="submit" className="button-submit bg-primary">Register</button>
             <p className="p">

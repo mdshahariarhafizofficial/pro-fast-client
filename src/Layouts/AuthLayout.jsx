@@ -1,6 +1,6 @@
 import React from 'react';
 // import { FcGoogle } from 'react-icons/fc';
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import authImage from '../assets/authImage.png';
 import logo from '../assets/logoblack.png'
 
@@ -23,7 +23,9 @@ const AuthLayout = () => {
       </div>
         {/* Logo */}
         <div className="absolute top-10 left-6 md:left-10 mb-10">
+          <Link to=''>
             <img src={logo} alt="" />
+          </Link>
         </div>
 </div>
     );
