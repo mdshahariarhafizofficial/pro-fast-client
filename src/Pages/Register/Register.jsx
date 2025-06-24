@@ -2,20 +2,22 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { PiUserCircleCheckFill } from 'react-icons/pi';
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import styled from "styled-components";
 import useAuth from '../../Hooks/UseAuth';
 import toast from 'react-hot-toast';
 const Register = () => {
     const {createUser, googleSignIn, setUser} = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm(); 
-
+      const navigate = useNavigate();
+      const location = useLocation();
     // Create User
     const onSubmit = data => {
       console.log(data);
       createUser(data.email, data.password)
       .then(result => {
         if (result.user) {
+         navigate(`${location.state ? location.state : '/' }`)          
          toast.success('Account Created SuccessFul!') 
         }
       })
@@ -33,6 +35,7 @@ const Register = () => {
       .then(result => {
         if (result.user) {
           setUser(result.user)
+          navigate(`${location.state ? location.state : '/' }`)
          toast.success('Google Sing in SuccessFul!') 
         }
       })
