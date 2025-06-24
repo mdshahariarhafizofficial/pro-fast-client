@@ -1,9 +1,11 @@
 import React from "react";
 import logo from '../../../assets/logoblack.png';
 import { Link, NavLink } from "react-router";
-import { MdArrowOutward, MdDirectionsBike } from "react-icons/md";
+import { MdArrowOutward, MdDirectionsBike, MdOutlineLogout } from "react-icons/md";
+import useAuth from "../../../Hooks/UseAuth";
 
 const Navbar = () => {
+  const {user} = useAuth();
   const navLinks = <>
             <li className="mr-4">
               <NavLink to=''
@@ -15,14 +17,19 @@ const Navbar = () => {
               className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
               >Services</NavLink>
             </li>
-            <li className="mr-4 md:hidden">
-              <NavLink className='btn' to='/login'>Sing In</NavLink>
-            </li>
-            <li className="mr-4 md:hidden">
-              <NavLink className='btn btn-primary text-secondary font-extrabold' to='/login'>
-                <MdDirectionsBike size={25}></MdDirectionsBike>                
-                Be a rider</NavLink>
-            </li>
+            {
+              !user && 
+              <>
+                <li className="mr-4 md:hidden">
+                  <NavLink className='btn' to='/login'>Sing In</NavLink>
+                </li>
+                <li className="mr-4 md:hidden">
+                  <NavLink className='btn btn-primary text-secondary font-extrabold' to='/login'>
+                    <MdDirectionsBike size={25}></MdDirectionsBike>                
+                    Be a rider</NavLink>
+                </li>
+              </>
+            }
   </>
   return (
     <div className="md:max-w-11/12 mx-auto rounded-xl">
@@ -65,15 +72,23 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end gap-3">
-          <Link to='/login'>
-            <button className="hidden md:flex btn px-6 py-6">Sing In</button>
-          </Link>
-          <button className="hidden md:flex btn btn-primary text-secondary font-bold py-6">
-            <MdDirectionsBike size={25}></MdDirectionsBike>
-            Be a rider</button>
-          <button className="hidden md:block bg-black p-3 rounded-full">
-            <MdArrowOutward color="#CAEB66" size={25}></MdArrowOutward>
-          </button>
+          {
+            user ?
+            <button className="btn btn-primary text-secondary font-bold py-6">
+              <MdOutlineLogout size={25}></MdOutlineLogout>Sing Out</button>
+          :
+          <>
+            <Link to='/login'>
+              <button className="hidden md:flex btn px-6 py-6">Sing In</button>
+            </Link>
+            <button className="hidden md:flex btn btn-primary text-secondary font-bold py-6">
+              <MdDirectionsBike size={25}></MdDirectionsBike>
+              Be a rider</button>
+            <button className="hidden md:block bg-black p-3 rounded-full">
+              <MdArrowOutward color="#CAEB66" size={25}></MdArrowOutward>
+            </button>
+          </>
+          }
         </div>
       </div>
     </div>
