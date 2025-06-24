@@ -3,9 +3,10 @@ import logo from '../../../assets/logoblack.png';
 import { Link, NavLink } from "react-router";
 import { MdArrowOutward, MdDirectionsBike, MdOutlineLogout } from "react-icons/md";
 import useAuth from "../../../Hooks/UseAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
   const navLinks = <>
             <li className="mr-4">
               <NavLink to=''
@@ -30,7 +31,17 @@ const Navbar = () => {
                 </li>
               </>
             }
-  </>
+  </>;
+  const handleSingOut = () => {
+    logout()
+    .then(() => {
+        toast.success('Log Out Successful!')
+    })
+    .catch(error => {
+      toast.error(error.message);
+    })
+  }
+
   return (
     <div className="md:max-w-11/12 mx-auto rounded-xl">
       <div className="navbar bg-white shadow-sm md:rounded-xl md:px-8 py-4">
@@ -74,7 +85,7 @@ const Navbar = () => {
         <div className="navbar-end gap-3">
           {
             user ?
-            <button className="btn btn-primary text-secondary font-bold py-6">
+            <button onClick={handleSingOut} className="btn btn-primary text-secondary font-bold py-6">
               <MdOutlineLogout size={25}></MdOutlineLogout>Sing Out</button>
           :
           <>
