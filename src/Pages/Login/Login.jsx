@@ -2,13 +2,25 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import styled from "styled-components";
+import useAuth from "../../Hooks/UseAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const {loginUser, setUser} = useAuth();
   const { register, handleSubmit, formState: {errors}, } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    
+    loginUser(data.email, data.password)
+    .then(result => {
+      const user = result.user;
+      setUser(user)
+      toast.success('Login Successful!')
+    })
+    .catch(error => {
+      if (error) {
+        toast.error('Invalid email or password')
+      }
+    })
   };
 
   return (
