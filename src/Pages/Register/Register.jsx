@@ -7,9 +7,10 @@ import styled from "styled-components";
 import useAuth from '../../Hooks/UseAuth';
 import toast from 'react-hot-toast';
 const Register = () => {
-    const {createUser} = useAuth();
+    const {createUser, googleSignIn, setUser} = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm(); 
 
+    // Create User
     const onSubmit = data => {
       console.log(data);
       createUser(data.email, data.password)
@@ -25,6 +26,22 @@ const Register = () => {
       });
       
     }
+
+    // Google SingIn
+    const handleGoogleSingIn = () => {
+      googleSignIn()
+      .then(result => {
+        if (result.user) {
+          setUser(result.user)
+         toast.success('Google Sing in SuccessFul!') 
+        }
+      })
+      .catch(error => {
+        if (error) {
+          toast.error(error.message)
+        }});
+      
+    };
 
     return (
     <div>
@@ -120,7 +137,7 @@ const Register = () => {
             </p>
             <div className="divider">OR</div>
             <div className="flex-row">
-            <button className="btn google">
+            <button type='button' onClick={handleGoogleSingIn} className="btn google">
                 <svg
                 xmlSpace="preserve"
                 style={{ enableBackground: "new 0 0 512 512" }}

@@ -6,9 +6,10 @@ import useAuth from "../../Hooks/UseAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const {loginUser, setUser} = useAuth();
+  const {loginUser, setUser, googleSignIn} = useAuth();
   const { register, handleSubmit, formState: {errors}, } = useForm();
 
+  // Login
   const onSubmit = (data) => {
     loginUser(data.email, data.password)
     .then(result => {
@@ -22,6 +23,22 @@ const Login = () => {
       }
     })
   };
+
+    // Google SingIn
+    const handleGoogleSingIn = () => {
+      googleSignIn()
+      .then(result => {
+        if (result.user) {
+          setUser(result.user)
+         toast.success('Google Sing in SuccessFul!') 
+        }
+      })
+      .catch(error => {
+        if (error) {
+          toast.error(error.message)
+        }});
+      
+    }; 
 
   return (
     <div>
@@ -96,7 +113,7 @@ const Login = () => {
             </p>
             <div className="divider">OR</div>
             <div className="flex-row">
-            <button className="btn google">
+            <button type="button" onClick={handleGoogleSingIn} className="btn google">
                 <svg
                 xmlSpace="preserve"
                 style={{ enableBackground: "new 0 0 512 512" }}
@@ -142,6 +159,7 @@ const Login = () => {
     </div>
   );
 };
+
 
 const StyledWrapper = styled.div`
   .form {
