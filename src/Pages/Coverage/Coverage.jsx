@@ -1,11 +1,10 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { FaSearch } from 'react-icons/fa';
 import { useLoaderData } from 'react-router';
 
-// Fix Leaflet icon paths
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -15,15 +14,37 @@ L.Icon.Default.mergeOptions({
 
 const center = [23.685, 90.3563]; // Bangladesh
 
+const MapFlyTo = ({ position }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (position) {
+      map.flyTo(position, 10);
+    }
+  }, [position, map]);
+  return null;
+};
+
 const Coverage = () => {
-const serviceCenter = useLoaderData();
-console.log(serviceCenter);
+  const serviceCenter = useLoaderData();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPosition, setSelectedPosition] = useState(null);
+
+  const handleSearch = () => {
+    const found = serviceCenter.find(
+      (service) =>
+        service.city.toLowerCase() === searchTerm.toLowerCase() ||
+        service.district.toLowerCase() === searchTerm.toLowerCase()
+    );
+    if (found) {
+      setSelectedPosition([found.latitude, found.longitude]);
+    } else {
+      alert('No service center found for that location.');
+    }
+  };
 
   return (
     <div className="mb-10">
       <div className="bg-white rounded-3xl p-8 md:p-14 shadow">
-
-        {/* Heading */}
         <h1 className="text-3xl md:text-4xl font-bold text-[#0f172a] text-center mb-8">
           We are available in 64 districts
         </h1>
@@ -32,16 +53,16 @@ console.log(serviceCenter);
         <div className="flex justify-center mb-10">
           <div className="flex w-full max-w-xl">
             <div className="flex items-center bg-[#f1f5f9] rounded-full w-full overflow-hidden">
-              <div className="flex-grow">
-                <input
-                  type="text"
-                  placeholder="Search here"
-                  className="bg-transparent outline-none px-5 py-3 w-full"  
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Search city or district"
+                className="bg-transparent outline-none px-5 py-3 w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <button
                 className="px-6 py-3 bg-primary font-semibold rounded-full hover:bg-lime-500 transition"
-                disabled
+                onClick={handleSearch}
               >
                 <div className="flex items-center gap-2">
                   <FaSearch className="text-md" />
@@ -52,7 +73,6 @@ console.log(serviceCenter);
           </div>
         </div>
 
-        {/* Subheading */}
         <h2 className="text-lg font-semibold text-[#0f172a] mb-4">
           We deliver almost all over Bangladesh
         </h2>
@@ -67,20 +87,21 @@ console.log(serviceCenter);
             className="rounded-xl"
           >
             <TileLayer
-              attribution='&copy; OpenStreetMap contributors'
+              attribution="&copy; OpenStreetMap contributors"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {
-                serviceCenter.map( (service, index) => (           
-                    <Marker key={index} position={[service.latitude, service.longitude]}>
-                    <Popup>
-                        {service.city}, 
-                        {service.region} <br />
-                        {service?.covered_area?.join(', ')}
-                    </Popup>
-                    </Marker>
-                 ) )
-            }
+            {selectedPosition && <MapFlyTo position={selectedPosition} />}
+            {serviceCenter.map((service, index) => (
+              <Marker
+                key={index}
+                position={[service.latitude, service.longitude]}
+              >
+                <Popup>
+                  <strong>{service.city}, {service.district}</strong><br />
+                  {service.covered_area.join(', ')}
+                </Popup>
+              </Marker>
+            ))}
           </MapContainer>
         </div>
       </div>
