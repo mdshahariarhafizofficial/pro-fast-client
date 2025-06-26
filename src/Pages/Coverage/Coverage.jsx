@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { FaSearch } from 'react-icons/fa';
+import { useLoaderData } from 'react-router';
 
 // Fix Leaflet icon paths
 delete L.Icon.Default.prototype._getIconUrl;
@@ -15,6 +16,9 @@ L.Icon.Default.mergeOptions({
 const center = [23.685, 90.3563]; // Bangladesh
 
 const Coverage = () => {
+const serviceCenter = useLoaderData();
+console.log(serviceCenter);
+
   return (
     <div className="mb-10">
       <div className="bg-white rounded-3xl p-8 md:p-14 shadow">
@@ -66,9 +70,17 @@ const Coverage = () => {
               attribution='&copy; OpenStreetMap contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={center}>
-              <Popup>Dhaka (Capital)</Popup>
-            </Marker>
+            {
+                serviceCenter.map( (service, index) => (           
+                    <Marker key={index} position={[service.latitude, service.longitude]}>
+                    <Popup>
+                        {service.city}, 
+                        {service.region} <br />
+                        {service?.covered_area?.join(', ')}
+                    </Popup>
+                    </Marker>
+                 ) )
+            }
           </MapContainer>
         </div>
       </div>
