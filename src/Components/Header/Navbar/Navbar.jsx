@@ -10,13 +10,13 @@ const Navbar = () => {
   const navLinks = <>
             <li className="mr-4">
               <NavLink to=''
-              className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
+              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
               >Home</NavLink>
             </li>
             <li className="mr-4">
-              <NavLink to='/services'
-              className={({isActive}) => isActive ? ' font-bold border-primary border-b-2 rounded-none': 'text-secondary font-medium'}
-              >Services</NavLink>
+              <NavLink to='/coverage'
+              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
+              >Coverage</NavLink>
             </li>
             {
               !user && 
