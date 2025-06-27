@@ -83,7 +83,7 @@ const Coverage = () => {
             center={center}
             zoom={7}
             scrollWheelZoom={false}
-            style={{ height: '400px', width: '100%' }}
+            style={{ height: '600px', width: '100%' }}
             className="rounded-xl"
           >
             <TileLayer

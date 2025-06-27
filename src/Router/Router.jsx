@@ -7,6 +7,7 @@ import Login from '../Pages/Login/Login';
 import Register from '../Pages/Register/Register';
 import Coverage from '../Pages/Coverage/Coverage';
 import Loading from '../Pages/Loading/Loading';
+import SendParcel from '../Pages/SendParcel/SendParcel';
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
                 Component: Coverage,
                 loader: () => fetch('/public/warehouses.json'),
                 hydrateFallbackElement: <Loading></Loading>
+            },
+            {
+                path: 'send-parcel',
+                Component: SendParcel,
             }
         ]
     },
