@@ -69,6 +69,7 @@ const SendParcel = () => {
     <div className="relative">
       <div className="bg-white rounded-[20px] p-10 lg:p-20 mb-20 shadow">
         <h2 className="text-5xl text-secondary font-bold mb-8">Send Parcel</h2>
+        <div className="divider"></div>
         <p className="text-gray-600 mb-8 font-bold text-2xl">Enter your parcel details</p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
