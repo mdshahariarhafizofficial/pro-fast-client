@@ -8,6 +8,7 @@ import Register from '../Pages/Register/Register';
 import Coverage from '../Pages/Coverage/Coverage';
 import Loading from '../Pages/Loading/Loading';
 import SendParcel from '../Pages/SendParcel/SendParcel';
+import PrivateRoutes from '../Routes/PrivateRoutes';
 
 const router = createBrowserRouter([
     {
@@ -26,7 +27,9 @@ const router = createBrowserRouter([
             },
             {
                 path: 'send-parcel',
-                Component: SendParcel,
+                element: <PrivateRoutes><SendParcel></SendParcel></PrivateRoutes>,
+                loader: () => fetch('/public/warehouses.json'),
+                hydrateFallbackElement: <Loading></Loading>                
             }
         ]
     },

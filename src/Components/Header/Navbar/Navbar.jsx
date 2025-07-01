@@ -78,7 +78,7 @@ const Navbar = () => {
               }
             </ul>
           </div>
-          <a href="">
+          <a href="/">
             <img src={logo} className="w-24" alt="" />
           </a>
         </div>
