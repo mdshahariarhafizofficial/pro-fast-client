@@ -30,7 +30,8 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.19",
     "sweetalert2": "^11.22.2",
-    "tailwindcss": "^4.1.10"
+    "tailwindcss": "^4.1.10",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
