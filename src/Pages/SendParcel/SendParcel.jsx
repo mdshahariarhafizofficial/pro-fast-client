@@ -5,10 +5,12 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const SendParcel = () => {
   const serviceCenters = useLoaderData();
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, watch, setValue } = useForm();
   const [type, setType] = useState("document");
 
@@ -89,11 +91,21 @@ const SendParcel = () => {
       customClass: { popup: "rounded-xl shadow-md px-6 py-6" },
     }).then(result => {
       if (result.isConfirmed) {
-        toast.success("Parcel submitted successfully!", {
-          style: { background: "#000", color: "#fff", fontWeight: "bold", fontSize: "16px", borderRadius: "10px", padding: "16px 24px" },
-          duration: 3000,
-          position: "top-center",
-        });
+        axiosSecure.post('/parcels', parcelData)
+        .then(res => {
+          if (res.data.insertedId) {
+              toast.success("Redirect to the payment gateway....", {
+              style: { background: "#000", color: "#fff", fontWeight: "bold", fontSize: "16px", borderRadius: "10px", padding: "16px 24px" },
+              duration: 3000,
+              position: "top-center",
+            });            
+          }
+        })
+        // toast.success("Parcel submitted successfully!", {
+        //   style: { background: "#000", color: "#fff", fontWeight: "bold", fontSize: "16px", borderRadius: "10px", padding: "16px 24px" },
+        //   duration: 3000,
+        //   position: "top-center",
+        // });
 
         // এখানে backend API call যোগ করতে পারো
         // fetch("/api/parcels", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(parcelData) })
