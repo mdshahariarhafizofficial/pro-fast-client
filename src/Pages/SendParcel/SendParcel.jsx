@@ -54,7 +54,7 @@ const SendParcel = () => {
       ...data,
       type,
       weight: type === "document" ? 0 : weight,
-      email: user?.email || "anonymous",
+      created_by: user?.email || "anonymous",
       trackingId,
       createdAt,
       deliveryStatus: "pending",

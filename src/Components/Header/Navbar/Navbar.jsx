@@ -36,6 +36,16 @@ const Navbar = () => {
                 </li>
               </>
             }
+            {
+              user && 
+              <>
+                <li className="mr-4">
+                  <NavLink to='/dashboard'
+                  className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
+                  >Dashboard</NavLink>
+                </li>
+              </>
+            }
   </>;
   const handleSingOut = () => {
     logout()
