@@ -4,18 +4,60 @@ import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { FaEye, FaTrashAlt, FaMoneyCheckAlt } from "react-icons/fa";
 import { format } from "date-fns";
+import Swal from 'sweetalert2';
 
 const MyParcels = () => {
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
-
-    const {data: parcels=[]} = useQuery({
+    // Tanstack Query
+    const {data: parcels=[], refetch} = useQuery({
         queryKey: ['myParcels', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
             return res.data;
         }
     });
+
+// Delete
+const handleDelete = (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action cannot be undone!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#6b7280",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosSecure.delete(`/parcels/${id}`);
+        if (res.data?.deletedCount > 0 || res.status === 200) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "The parcel has been deleted successfully.",
+            icon: "success",
+            confirmButtonColor: "#16a34a",
+          });
+           refetch() // Refresh the table data if available
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: "Parcel could not be deleted.",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Server Error!",
+          text: "Something went wrong. Please try again later.",
+        });
+      }
+    }
+  });
+};
     console.log(parcels);
     
 
@@ -46,7 +88,7 @@ const MyParcels = () => {
             return (
               <tr key={parcel._id} className="hover border-b">
                 <td>{index + 1}</td>
-                <td className="font-medium text-gray-800">{parcel.parcelName}</td>
+                <td className="font-medium text-gray-800 truncate">{parcel.parcelName}</td>
                 <td className="capitalize">{parcel.type}</td>
                 <td className="font-semibold text-green-600">৳{parcel.costDetails?.totalCost || 0}</td>
                 <td className="text-gray-600">{createdDate}</td>
@@ -98,7 +140,7 @@ const MyParcels = () => {
                   <button
                     className="btn btn-xs btn-outline btn-error tooltip"
                     data-tip="Delete"
-                    onClick={() => console.log("Delete", parcel._id)}
+                    onClick={() => handleDelete(parcel._id)}
                   >
                     <FaTrashAlt className="text-sm" />
                   </button>
