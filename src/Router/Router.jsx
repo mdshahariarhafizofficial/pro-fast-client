@@ -11,6 +11,7 @@ import SendParcel from '../Pages/SendParcel/SendParcel';
 import PrivateRoutes from '../Routes/PrivateRoutes';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import MyParcels from '../Pages/Dashboard/MyParcels/MyParcels';
+import Overview from '../Pages/Dashboard/Overview/Overview';
 
 const router = createBrowserRouter([
     {
@@ -55,7 +56,10 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                // path:'/my-parcels',
+                element: <PrivateRoutes><Overview></Overview></PrivateRoutes>       
+            },
+            {
+                path:'my-parcels',
                 element: <PrivateRoutes><MyParcels></MyParcels></PrivateRoutes>
             }
         ]

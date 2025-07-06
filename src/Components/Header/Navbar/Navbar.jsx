@@ -2,7 +2,7 @@ import React from "react";
 import logo from '../../../assets/logoblack.png';
 import { Link, NavLink } from "react-router";
 import { MdArrowOutward, MdDirectionsBike, MdOutlineLogout } from "react-icons/md";
-import useAuth from "../../../Hooks/UseAuth";
+import useAuth from '../../../Hooks/useAuth';
 import toast from "react-hot-toast";
 
 const Navbar = () => {

@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
+import logo from '../assets/logoblack.png';
 
 const DashboardLayout = () => {
   return (
@@ -39,15 +40,26 @@ const DashboardLayout = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+
+          <ul className="menu gap-4 bg-base-200 text-base-content min-h-full w-80 p-4">
+            <a href="/">
+              <img src={logo} className="w-24 mb-5" alt="" />
+            </a>            
             {/* Sidebar content here */}
-            <li>
-              <a>Sidebar Item 1</a>
+            <li className="mr-4">
+              <NavLink to='/dashboard'
+              end
+              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
+              >Overview</NavLink>
             </li>
-            <li>
-              <a>Sidebar Item 222</a>
+            <li className="mr-4">
+              <NavLink to='/dashboard/my-parcels'
+              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
+              >My Parcels</NavLink>
             </li>
           </ul>
+
+          
         </div>
       </div>
     </div>
