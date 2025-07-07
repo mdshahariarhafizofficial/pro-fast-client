@@ -60,7 +60,7 @@ const router = createBrowserRouter([
                 element: <PrivateRoutes><Overview></Overview></PrivateRoutes>       
             },
             {
-                path: 'payment/:id',
+                path: 'payment/:parcelId',
                 element: <PrivateRoutes><Payment></Payment></PrivateRoutes>
             },
             {

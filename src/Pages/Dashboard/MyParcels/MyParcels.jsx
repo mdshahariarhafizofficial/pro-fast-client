@@ -56,6 +56,7 @@ const handleDelete = (id) => {
           title: "Server Error!",
           text: "Something went wrong. Please try again later.",
         });
+        console.log(error);
       }
     }
   });

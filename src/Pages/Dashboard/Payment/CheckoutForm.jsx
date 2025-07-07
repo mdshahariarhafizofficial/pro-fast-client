@@ -1,10 +1,31 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import Loading from '../../Loading/Loading';
 
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-     const [error, setError] = useState();
+    const [error, setError] = useState();
+    const {parcelId} = useParams();
+    console.log(parcelId);
+    
+    const axiosSecure = useAxiosSecure();
+
+    const { isPending, data: parcel = {},} = useQuery({
+        queryKey: ['parcel', parcelId],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/parcels/${parcelId}`)
+            return res.data;
+        }
+    })
+    if (isPending) {
+        return <Loading></Loading>
+    }
+
+
     const handleSubmit = async(e) => {
         e.preventDefault();
         if (!stripe || !elements) {
@@ -30,6 +51,9 @@ const CheckoutForm = () => {
         }
 
     };
+    const amount = parcel?.costDetails.totalCost;
+    console.log(parcel);
+    
 
     return (
     <div className="w-lg max-w-6xl mx-auto mt-10 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700">
@@ -62,7 +86,7 @@ const CheckoutForm = () => {
           disabled={!stripe}
           className="btn btn-primary font-bold text-black w-full"
         >
-            💳 Pay Now
+            💳 Pay ${amount}
         </button>
 
         {error && (
