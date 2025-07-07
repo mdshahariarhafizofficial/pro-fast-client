@@ -12,6 +12,7 @@ import PrivateRoutes from '../Routes/PrivateRoutes';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import MyParcels from '../Pages/Dashboard/MyParcels/MyParcels';
 import Overview from '../Pages/Dashboard/Overview/Overview';
+import Payment from '../Pages/Dashboard/Payment/Payment';
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <PrivateRoutes><Overview></Overview></PrivateRoutes>       
+            },
+            {
+                path: 'payment/:id',
+                element: <PrivateRoutes><Payment></Payment></PrivateRoutes>
             },
             {
                 path:'my-parcels',

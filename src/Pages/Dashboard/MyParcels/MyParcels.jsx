@@ -5,9 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 import { FaEye, FaTrashAlt, FaMoneyCheckAlt } from "react-icons/fa";
 import { format } from "date-fns";
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const MyParcels = () => {
     const {user} = useAuth();
+    const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     // Tanstack Query
     const {data: parcels=[], refetch} = useQuery({
@@ -59,7 +61,11 @@ const handleDelete = (id) => {
   });
 };
     console.log(parcels);
-    
+
+    // Payment
+    const handlePay = (id) => {
+      navigate(`/dashboard/payment/${id}`)
+    };
 
     return (
     <div className="overflow-x-auto bg-white rounded-xl shadow p-6">
@@ -132,8 +138,8 @@ const handleDelete = (id) => {
                     <button
                       className="btn btn-xs btn-outline btn-success tooltip"
                       data-tip="Pay"
-                      onClick={() => console.log("Pay", parcel._id)}
-                    >
+                      onClick={() => handlePay(parcel._id)}
+                    >Pay
                       <FaMoneyCheckAlt className="text-sm" />
                     </button>
                   )}
