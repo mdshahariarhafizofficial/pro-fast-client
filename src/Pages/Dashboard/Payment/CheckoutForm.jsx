@@ -1,99 +1,105 @@
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
-import Loading from '../../Loading/Loading';
-import toast from 'react-hot-toast';
-import useAuth from '../../../Hooks/useAuth';
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loading from "../../Loading/Loading";
+import toast from "react-hot-toast";
+import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const CheckoutForm = () => {
-    const user = useAuth(); 
-    const stripe = useStripe();
-    const elements = useElements();
-    const [error, setError] = useState('');
-    const {parcelId} = useParams();
-    
-    const axiosSecure = useAxiosSecure();
+  const user = useAuth();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState("");
+  const { parcelId } = useParams();
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
-    const { isPending, data: parcel = {},} = useQuery({
-        queryKey: ['parcel', parcelId],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/parcels/${parcelId}`)
-            return res.data;
-        }
-    })
-    if (isPending) {
-        return <Loading></Loading>
+  const { isPending, data: parcel = {} } = useQuery({
+    queryKey: ["parcel", parcelId],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/parcels/${parcelId}`);
+      return res.data;
+    },
+  });
+  if (isPending) {
+    return <Loading></Loading>;
+  }
+
+  const amount = parcel?.costDetails.totalCost;
+  console.log(parcel);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!stripe || !elements) {
+      return;
     }
-    
-    const amount = parcel?.costDetails.totalCost;
-    console.log(parcel);
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        if (!stripe || !elements) {
-            return;
-        }
+    const card = elements.getElement(CardElement);
+    if (card === null) {
+      return;
+    }
 
-        const card = elements.getElement(CardElement);
-        if (card === null) {
-            return;
-        }
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+    });
 
-        const {error, paymentMethod} = await stripe.createPaymentMethod({
-            type: 'card',
-            card,
-        })
+    if (error) {
+      setError(error.message);
+    } else {
+      setError("");
+      console.log("payment method:", paymentMethod);
+    }
 
-        if (error) {
-            setError(error.message)
-        }
-        else{
-            setError('')
-            console.log('payment method:', paymentMethod);
-        }
+    // Payment Intent
+    const res = await axiosSecure.post("/create-payment-intent", {
+      amount,
+    });
 
-        // Payment Intent
-        const res = await axiosSecure.post('/create-payment-intent', {
-          amount
-        })
-        
-      const result = await stripe.confirmCardPayment(res.data.clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-          billing_details: {
-            name: user.displayName,
-            email: user.email
-          },          
+    const result = await stripe.confirmCardPayment(res.data.clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: user.displayName,
+          email: user.email,
         },
-      });
-      
-      
-      if (result.error) {
-        setError(result.error.message);
-      } else if (result.paymentIntent.status === "succeeded") {
-        console.log(result);
-        setError("");
-        const payment = {
-            parcelId,
-            email: user.email,
-            amount,
-            paymentMethod: result.paymentIntent.payment_method_types,
-            "transactionId": result.paymentIntent.id,
-        };
-        const paymentRes = await axiosSecure.post('/payments', payment);
-        console.log(paymentRes);
-        
-        if (paymentRes.data.paymentInsertedId) {
-            toast.success('Payment Successful')
-        }
+      },
+    });
+
+    if (result.error) {
+      setError(result.error.message);
+    } else if (result.paymentIntent.status === "succeeded") {
+      console.log(result);
+      setError("");
+      const payment = {
+        parcelId,
+        email: user.email,
+        amount,
+        paymentMethod: result.paymentIntent.payment_method_types,
+        transactionId: result.paymentIntent.id,
+      };
+      const paymentRes = await axiosSecure.post("/payments", payment);
+      console.log(paymentRes);
+
+      if (paymentRes.data.paymentInsertedId) {
+        // ✅ Show SweetAlert with transaction ID
+        await Swal.fire({
+          icon: "success",
+          title: "Payment Successful!",
+          html: `<strong>Transaction ID:</strong> <code>${result.paymentIntent.id}</code>`,
+          confirmButtonText: "Go to My Parcels",
+        });
+
+        // ✅ Redirect to /myParcels
+        navigate("/dashboard/my-parcels");
       }
+    }
+  };
 
-    };
-    
-
-    return (
+  return (
     <div className="w-lg max-w-6xl mx-auto mt-10 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700">
       <h2 className="text-xl font-semibold text-center mb-6 text-gray-800 dark:text-white">
         💳 Payment Form
@@ -124,7 +130,7 @@ const CheckoutForm = () => {
           disabled={!stripe}
           className="btn btn-primary font-bold text-black w-full"
         >
-            💳 Pay ${amount}
+          💳 Pay ${amount}
         </button>
 
         {error && (
@@ -132,7 +138,7 @@ const CheckoutForm = () => {
         )}
       </form>
     </div>
-    );
+  );
 };
 
 export default CheckoutForm;
