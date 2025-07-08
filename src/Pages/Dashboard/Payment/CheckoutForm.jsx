@@ -5,13 +5,14 @@ import { useParams } from 'react-router';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Loading from '../../Loading/Loading';
 import toast from 'react-hot-toast';
+import useAuth from '../../../Hooks/useAuth';
 
 const CheckoutForm = () => {
+    const user = useAuth(); 
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState('');
     const {parcelId} = useParams();
-    console.log(parcelId);
     
     const axiosSecure = useAxiosSecure();
 
@@ -57,20 +58,36 @@ const CheckoutForm = () => {
         const res = await axiosSecure.post('/create-payment-intent', {
           amount
         })
-        console.log('Res From Intent', res);
-        
         
       const result = await stripe.confirmCardPayment(res.data.clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.displayName,
+            email: user.email
+          },          
         },
       });
+      
       
       if (result.error) {
         setError(result.error.message);
       } else if (result.paymentIntent.status === "succeeded") {
-        toast.success('Payment Successful')
+        console.log(result);
         setError("");
+        const payment = {
+            parcelId,
+            email: user.email,
+            amount,
+            paymentMethod: result.paymentIntent.payment_method_types,
+            "transactionId": result.paymentIntent.id,
+        };
+        const paymentRes = await axiosSecure.post('/payments', payment);
+        console.log(paymentRes);
+        
+        if (paymentRes.data.paymentInsertedId) {
+            toast.success('Payment Successful')
+        }
       }
 
     };
