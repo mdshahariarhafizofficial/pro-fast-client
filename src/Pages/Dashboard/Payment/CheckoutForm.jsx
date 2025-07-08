@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Loading from '../../Loading/Loading';
+import toast from 'react-hot-toast';
 
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-    const [error, setError] = useState();
+    const [error, setError] = useState('');
     const {parcelId} = useParams();
     console.log(parcelId);
     
@@ -24,7 +25,9 @@ const CheckoutForm = () => {
     if (isPending) {
         return <Loading></Loading>
     }
-
+    
+    const amount = parcel?.costDetails.totalCost;
+    console.log(parcel);
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -50,9 +53,27 @@ const CheckoutForm = () => {
             console.log('payment method:', paymentMethod);
         }
 
+        // Payment Intent
+        const res = await axiosSecure.post('/create-payment-intent', {
+          amount
+        })
+        console.log('Res From Intent', res);
+        
+        
+      const result = await stripe.confirmCardPayment(res.data.clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
+      
+      if (result.error) {
+        setError(result.error.message);
+      } else if (result.paymentIntent.status === "succeeded") {
+        toast.success('Payment Successful')
+        setError("");
+      }
+
     };
-    const amount = parcel?.costDetails.totalCost;
-    console.log(parcel);
     
 
     return (
