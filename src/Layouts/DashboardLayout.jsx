@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import logo from '../assets/logoblack.png';
+import { FaTachometerAlt, FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit } from "react-icons/fa";
 
 const DashboardLayout = () => {
   return (
@@ -46,20 +47,68 @@ const DashboardLayout = () => {
               <img src={logo} className="w-24 mb-5" alt="" />
             </a>            
             {/* Sidebar content here */}
-            <li className="mr-4">
-              <NavLink to='/dashboard'
-              end
-              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
-              >Overview</NavLink>
-            </li>
-            <li className="mr-4">
-              <NavLink to='/dashboard/my-parcels'
-              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
-              >My Parcels</NavLink>
-            </li>
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard"
+      end
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaTachometerAlt className="inline-block mr-2 text-lg" />
+      Overview
+    </NavLink>
+  </li>
+
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/my-parcels"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaBox className="inline-block mr-2 text-lg" />
+      My Parcels
+    </NavLink>
+  </li>
+
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/payment-history"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaMoneyCheckAlt className="inline-block mr-2 text-lg" />
+      Payment History
+    </NavLink>
+  </li>
+
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/track-package"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaMapMarkedAlt className="inline-block mr-2 text-lg" />
+      Track Package
+    </NavLink>
+  </li>
+
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/update-profile"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaUserEdit className="inline-block mr-2 text-lg" />
+      Update Profile
+    </NavLink>
+  </li>
           </ul>
 
-          
         </div>
       </div>
     </div>

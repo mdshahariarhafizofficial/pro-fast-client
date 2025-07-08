@@ -4,12 +4,11 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loading from "../../Loading/Loading";
-import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
 const CheckoutForm = () => {
-  const user = useAuth();
+  const {user} = useAuth();
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");

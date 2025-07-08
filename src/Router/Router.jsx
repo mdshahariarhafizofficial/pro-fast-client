@@ -13,6 +13,7 @@ import DashboardLayout from '../Layouts/DashboardLayout';
 import MyParcels from '../Pages/Dashboard/MyParcels/MyParcels';
 import Overview from '../Pages/Dashboard/Overview/Overview';
 import Payment from '../Pages/Dashboard/Payment/Payment';
+import PaymentHistory from '../Pages/Dashboard/PaymentHistory/PaymentHistory';
 
 const router = createBrowserRouter([
     {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
             {
                 path:'my-parcels',
                 element: <PrivateRoutes><MyParcels></MyParcels></PrivateRoutes>
+            },
+            {
+                path: 'payment-history',
+                Component: PaymentHistory,
             }
         ]
     },
