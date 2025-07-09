@@ -61,8 +61,18 @@ const Register = () => {
     // Google SingIn
     const handleGoogleSingIn = () => {
       googleSignIn()
-      .then(result => {
+      .then( async(result) => {
         if (result.user) {
+          // Send user to DB
+          const userInfo = {
+            email: result.user.email,
+            role: 'user',
+            created_at: new Date().toISOString(),
+          };
+
+          const res = await axiosUrl.post('/users', userInfo);
+          console.log('From Google SignIN --- ', res.data);
+
           setUser(result.user)
           navigate(`${location.state ? location.state : '/' }`)
          toast.success('Google Sing in SuccessFul!') 

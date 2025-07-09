@@ -100,8 +100,15 @@ const Navbar = () => {
         <div className="navbar-end gap-3">
           {
             user ?
+            <>
+              <div className="avatar">
+                  <div className="w-12 rounded-full">
+                    <img src={user?.photoURL} />
+                  </div>
+                </div>
             <button onClick={handleSingOut} className="btn btn-primary text-secondary font-bold py-6">
               <MdOutlineLogout size={25}></MdOutlineLogout>Sing Out</button>
+            </>
           :
           <>
             <Link to='/login'>
