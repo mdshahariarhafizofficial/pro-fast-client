@@ -23,6 +23,11 @@ const Navbar = () => {
               className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
               >Send Parcel</NavLink>
             </li>
+            <li className="mr-4">
+              <NavLink to='/BeARider'
+              className={({isActive}) => isActive ? ' font-bold bg-primary': 'text-secondary font-medium'}
+              >Be A Rider</NavLink>
+            </li>
             {
               !user && 
               <>

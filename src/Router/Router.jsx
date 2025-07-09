@@ -14,6 +14,7 @@ import MyParcels from '../Pages/Dashboard/MyParcels/MyParcels';
 import Overview from '../Pages/Dashboard/Overview/Overview';
 import Payment from '../Pages/Dashboard/Payment/Payment';
 import PaymentHistory from '../Pages/Dashboard/PaymentHistory/PaymentHistory';
+import BeARider from '../Pages/BeARider/BeARider';
 
 const router = createBrowserRouter([
     {
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
                 element: <PrivateRoutes><SendParcel></SendParcel></PrivateRoutes>,
                 loader: () => fetch('/public/warehouses.json'),
                 hydrateFallbackElement: <Loading></Loading>                
-            }
+            },
+            {
+                path: 'BeARider',
+                Component: BeARider,
+            },
         ]
     },
     {
