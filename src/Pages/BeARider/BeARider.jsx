@@ -31,6 +31,8 @@ const BeRider = () => {
     };
 
     axiosSecure.post("/riders", riderData).then((res) => {
+    console.log(res.data);
+    
       if (res.data.insertedId) {
         Swal.fire({
           icon: "success",

@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import logo from '../assets/logoblack.png';
-import { FaTachometerAlt, FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit } from "react-icons/fa";
+import { FaTachometerAlt, FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit, FaUserClock } from "react-icons/fa";
+import { HiBadgeCheck } from "react-icons/hi";
 
 const DashboardLayout = () => {
   return (
@@ -105,6 +106,28 @@ const DashboardLayout = () => {
     >
       <FaUserEdit className="inline-block mr-2 text-lg" />
       Update Profile
+    </NavLink>
+  </li>
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/pending-riders"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <FaUserClock className="inline-block mr-2 text-lg" />
+      Pending Riders
+    </NavLink>
+  </li>
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/active-riders"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <HiBadgeCheck className="inline-block mr-2 text-xl" />
+      Active Riders
     </NavLink>
   </li>
           </ul>
