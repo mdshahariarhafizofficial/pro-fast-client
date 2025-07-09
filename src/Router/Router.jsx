@@ -39,7 +39,9 @@ const router = createBrowserRouter([
             },
             {
                 path: 'BeARider',
-                Component: BeARider,
+                element: <PrivateRoutes><BeARider></BeARider></PrivateRoutes>,
+                loader: () => fetch('/public/warehouses.json'),
+                hydrateFallbackElement: <Loading></Loading>                  
             },
         ]
     },
