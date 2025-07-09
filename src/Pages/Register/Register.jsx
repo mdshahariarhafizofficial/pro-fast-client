@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { PiUserCircleCheckFill } from 'react-icons/pi';
 import { Link, useLocation, useNavigate } from "react-router";
 import styled from "styled-components";
-import useAuth from '../../Hooks/UseAuth';
+import useAuth from '../../Hooks/useAuth';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 const Register = () => {
-    const {createUser, googleSignIn, setUser} = useAuth();
+    const {createUser, googleSignIn, setUser, updateUserProfile, user} = useAuth();
+    const [profilePic, setProfilePic] = useState('');
+
     const { register, handleSubmit, formState: { errors } } = useForm(); 
       const navigate = useNavigate();
       const location = useLocation();
@@ -17,8 +20,20 @@ const Register = () => {
       createUser(data.email, data.password)
       .then(result => {
         if (result.user) {
-         navigate(`${location.state ? location.state : '/' }`)          
-         toast.success('Account Created SuccessFul!') 
+
+          // Update Profile
+          const userInfo = {
+            displayName: data.name,
+            photoURL: profilePic,
+          }
+          updateUserProfile(userInfo)
+          .then(() => {
+            navigate(`${location.state ? location.state : '/' }`)          
+            toast.success('Account Created SuccessFul!')             
+          })
+          .catch( (error) => {
+            console.log(error);
+          } )
         }
       })
       .catch(error => {
@@ -45,6 +60,17 @@ const Register = () => {
         }});
       
     };
+
+    // Image Upload
+    const handleImageUpload = async(e) => {
+      const image = e.target.files[0];
+      const formData = new FormData();
+      formData.append('image', image);
+
+      const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Image_Upload_Key}`, formData) 
+      
+      setProfilePic(res.data?.data.url);
+    }
 
     return (
     <div>
@@ -73,7 +99,20 @@ const Register = () => {
               errors.name?.type === 'required' && (
                 <p role='alert' className='text-red-500 text-sm'>*Name is required</p>
               )
-            }            
+            }  
+
+            {/* Image */}
+            <div className="flex-column">
+            <label>Photo</label>
+            </div>
+            <div className="">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="file-input file-input-bordered w-full h-12 rounded-xl"
+            />
+            </div>
 
 
             {/* Email */}
