@@ -7,9 +7,12 @@ import styled from "styled-components";
 import useAuth from '../../Hooks/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import useAxios from '../../Hooks/useAxios';
+
 const Register = () => {
-    const {createUser, googleSignIn, setUser, updateUserProfile, user} = useAuth();
+    const {createUser, googleSignIn, setUser, updateUserProfile} = useAuth();
     const [profilePic, setProfilePic] = useState('');
+    const axiosUrl = useAxios();
 
     const { register, handleSubmit, formState: { errors } } = useForm(); 
       const navigate = useNavigate();
@@ -18,15 +21,26 @@ const Register = () => {
     const onSubmit = data => {
       console.log(data);
       createUser(data.email, data.password)
-      .then(result => {
+      .then( async(result) => {
         if (result.user) {
 
-          // Update Profile
+          // Send user to DB
           const userInfo = {
+            email: data.email,
+            role: 'user',
+            created_at: new Date().toISOString(),
+          };
+
+          const res = await axiosUrl.post('/users', userInfo);
+          console.log('From Post User --- ', res.data);
+          
+
+          // Update Profile
+          const userProfile = {
             displayName: data.name,
             photoURL: profilePic,
           }
-          updateUserProfile(userInfo)
+          updateUserProfile(userProfile)
           .then(() => {
             navigate(`${location.state ? location.state : '/' }`)          
             toast.success('Account Created SuccessFul!')             
