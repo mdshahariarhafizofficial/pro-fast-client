@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router";
 import logo from '../assets/logoblack.png';
 import { FaTachometerAlt, FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit, FaUserClock } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";
+import { RiUserAddFill } from "react-icons/ri";
 
 const DashboardLayout = () => {
   return (
@@ -128,6 +129,17 @@ const DashboardLayout = () => {
     >
       <HiBadgeCheck className="inline-block mr-2 text-xl" />
       Active Riders
+    </NavLink>
+  </li>
+  <li className="mr-4">
+    <NavLink
+      to="/dashboard/make-admin"
+      className={({ isActive }) =>
+        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+      }
+    >
+      <RiUserAddFill className="inline-block mr-2 text-xl" />
+      MakeAdmin
     </NavLink>
   </li>
           </ul>

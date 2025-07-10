@@ -17,6 +17,7 @@ import PaymentHistory from '../Pages/Dashboard/PaymentHistory/PaymentHistory';
 import BeARider from '../Pages/BeARider/BeARider';
 import PendingRiders from '../Pages/Dashboard/PendingRiders/PendingRiders';
 import ActiveRiders from '../Pages/Dashboard/ActiveRiders/ActiveRiders';
+import MakeAdmin from '../Pages/Dashboard/MakeAdmin/MakeAdmin';
 
 const router = createBrowserRouter([
     {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
             {
                 path: 'pending-riders',
                 element: <PrivateRoutes><PendingRiders></PendingRiders></PrivateRoutes>
+            },
+            {
+                path: 'make-admin',
+                element: <PrivateRoutes><MakeAdmin></MakeAdmin></PrivateRoutes>
             }
         ]
     },
