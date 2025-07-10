@@ -7,7 +7,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 const BeRider = () => {
   const serviceCenters = useLoaderData(); // same data as send parcel
   const axiosSecure = useAxiosSecure();
-  const { register, handleSubmit, watch, setValue } = useForm();
+  const { register, handleSubmit, watch, setValue, reset } = useForm();
 
   const region = watch("region");
 
@@ -34,6 +34,7 @@ const BeRider = () => {
     console.log(res.data);
     
       if (res.data.insertedId) {
+        reset();
         Swal.fire({
           icon: "success",
           title: "Application Submitted",

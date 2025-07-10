@@ -16,7 +16,7 @@ const PendingRiders = () => {
     },
   });
 
-  const handleAction = async (id, actionType) => {
+  const handleAction = async (id, actionType, email) => {
     const result = await Swal.fire({
       title: `${actionType === "approve" ? "Approve" : "Reject"} Rider?`,
       text: `Are you sure you want to ${actionType} this rider?`,
@@ -29,7 +29,9 @@ const PendingRiders = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecure.patch(`/riders/${id}`, { status: actionType });
+        await axiosSecure.patch(`/riders/${id}`, { status: actionType,
+        email,
+         });
         Swal.fire("Success", `Rider ${actionType}d successfully!`, "success");
         queryClient.invalidateQueries(["pending-riders"]);
       } catch (err) {
@@ -71,13 +73,13 @@ const PendingRiders = () => {
               <td className="flex gap-2">
                 <button
                   className="btn btn-sm btn-outline btn-success"
-                  onClick={() => handleAction(rider._id, "approve")}
+                  onClick={() => handleAction(rider._id, "approve", rider.email)}
                 >
                   ✅ Approve
                 </button>
                 <button
                   className="btn btn-sm btn-outline btn-error"
-                  onClick={() => handleAction(rider._id, "reject")}
+                  onClick={() => handleAction(rider._id, "reject", rider.email)}
                 >
                   ❌ Reject
                 </button>
