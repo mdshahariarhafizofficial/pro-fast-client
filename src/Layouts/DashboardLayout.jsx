@@ -4,8 +4,16 @@ import logo from '../assets/logoblack.png';
 import { FaTachometerAlt, FaBox, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit, FaUserClock } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";
 import { RiUserAddFill } from "react-icons/ri";
+import useUserRole from "../Hooks/useUserRole";
+import Loading from '../Pages/Loading/Loading'
 
 const DashboardLayout = () => {
+  const {role, loading} = useUserRole();
+
+  if (loading) {
+    return <Loading></Loading>
+  }
+
   return (
     <div>
       <div className="drawer lg:drawer-open">
@@ -61,42 +69,48 @@ const DashboardLayout = () => {
       Overview
     </NavLink>
   </li>
+  {
+    role === 'user' && (
+    <>
+      <li className="mr-4">
+        <NavLink
+          to="/dashboard/my-parcels"
+          className={({ isActive }) =>
+            isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+          }
+        >
+          <FaBox className="inline-block mr-2 text-lg" />
+          My Parcels
+        </NavLink>
+      </li>
 
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/my-parcels"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <FaBox className="inline-block mr-2 text-lg" />
-      My Parcels
-    </NavLink>
-  </li>
+      <li className="mr-4">
+        <NavLink
+          to="/dashboard/payment-history"
+          className={({ isActive }) =>
+            isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+          }
+        >
+          <FaMoneyCheckAlt className="inline-block mr-2 text-lg" />
+          Payment History
+        </NavLink>
+      </li>
 
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/payment-history"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <FaMoneyCheckAlt className="inline-block mr-2 text-lg" />
-      Payment History
-    </NavLink>
-  </li>
+      <li className="mr-4">
+        <NavLink
+          to="/dashboard/track-package"
+          className={({ isActive }) =>
+            isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+          }
+        >
+          <FaMapMarkedAlt className="inline-block mr-2 text-lg" />
+          Track Package
+        </NavLink>
+      </li>
+    </>
+    )
+  }
 
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/track-package"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <FaMapMarkedAlt className="inline-block mr-2 text-lg" />
-      Track Package
-    </NavLink>
-  </li>
 
   <li className="mr-4">
     <NavLink
@@ -109,39 +123,45 @@ const DashboardLayout = () => {
       Update Profile
     </NavLink>
   </li>
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/pending-riders"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <FaUserClock className="inline-block mr-2 text-lg" />
-      Pending Riders
-    </NavLink>
-  </li>
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/active-riders"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <HiBadgeCheck className="inline-block mr-2 text-xl" />
-      Active Riders
-    </NavLink>
-  </li>
-  <li className="mr-4">
-    <NavLink
-      to="/dashboard/make-admin"
-      className={({ isActive }) =>
-        isActive ? "font-bold bg-primary" : "text-secondary font-medium"
-      }
-    >
-      <RiUserAddFill className="inline-block mr-2 text-xl" />
-      MakeAdmin
-    </NavLink>
-  </li>
+
+  { role === 'admin' &&
+    <>
+    <li className="mr-4">
+      <NavLink
+        to="/dashboard/pending-riders"
+        className={({ isActive }) =>
+          isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+        }
+      >
+        <FaUserClock className="inline-block mr-2 text-lg" />
+        Pending Riders
+      </NavLink>
+    </li>
+    <li className="mr-4">
+      <NavLink
+        to="/dashboard/active-riders"
+        className={({ isActive }) =>
+          isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+        }
+      >
+        <HiBadgeCheck className="inline-block mr-2 text-xl" />
+        Active Riders
+      </NavLink>
+    </li>
+    </>
+  }
+    <li className="mr-4">
+      <NavLink
+        to="/dashboard/make-admin"
+        className={({ isActive }) =>
+          isActive ? "font-bold bg-primary" : "text-secondary font-medium"
+        }
+      >
+        <RiUserAddFill className="inline-block mr-2 text-xl" />
+        MakeAdmin
+      </NavLink>
+    </li>
+
           </ul>
 
         </div>

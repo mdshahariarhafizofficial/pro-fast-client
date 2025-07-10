@@ -18,6 +18,7 @@ const MakeAdmin = () => {
     }
   };
 
+  // Make Admin handler
   const handleMakeAdmin = (userId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -33,7 +34,38 @@ const MakeAdmin = () => {
           const res = await axiosSecure.patch(`/users/${userId}/make-admin`);
           if (res.data.modifiedCount > 0) {
             Swal.fire("Success", "User has been made admin.", "success");
-            setUsers(users.filter((u) => u._id !== userId));
+            // update user role in state
+            setUsers((prev) =>
+              prev.map((u) => (u._id === userId ? { ...u, role: "admin" } : u))
+            );
+          }
+        } catch (err) {
+          Swal.fire("Error", "Something went wrong!", "error");
+        }
+      }
+    });
+  };
+
+  // Remove Admin handler
+  const handleRemoveAdmin = (userId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This user will lose admin access!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, remove admin!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axiosSecure.patch(`/users/${userId}/remove-admin`);
+          if (res.data.modifiedCount > 0) {
+            Swal.fire("Success", "Admin role removed from user.", "success");
+            // update user role in state
+            setUsers((prev) =>
+              prev.map((u) => (u._id === userId ? { ...u, role: "user" } : u))
+            );
           }
         } catch (err) {
           Swal.fire("Error", "Something went wrong!", "error");
@@ -53,18 +85,24 @@ const MakeAdmin = () => {
           className="input input-bordered w-full"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
         />
-        <button onClick={handleSearch} className="btn btn-primary text-black">Search</button>
+        <button onClick={handleSearch} className="btn btn-primary">
+          Search
+        </button>
       </div>
 
       {users.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="table table-zebra">
+          <table className="table table-zebra w-full">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Role</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -74,13 +112,23 @@ const MakeAdmin = () => {
                   <td>{i + 1}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
+                  <td className="capitalize">{user.role || "user"}</td>
                   <td>
-                    <button
-                      onClick={() => handleMakeAdmin(user._id)}
-                      className="btn btn-success btn-sm"
-                    >
-                      Make Admin
-                    </button>
+                    {user.role === "admin" ? (
+                      <button
+                        onClick={() => handleRemoveAdmin(user._id)}
+                        className="btn btn-error btn-sm"
+                      >
+                        Remove Admin
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleMakeAdmin(user._id)}
+                        className="btn btn-success btn-sm"
+                      >
+                        Make Admin
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
