@@ -8,7 +8,7 @@ const useUserRole = () => {
 
   const {
     data: roleData,
-    isLoading,
+    isLoading: roleLoading,
     isError,
     refetch,
   } = useQuery({
@@ -22,7 +22,7 @@ const useUserRole = () => {
 
   return {
     role: roleData,
-    loading: isLoading || loading,
+    roleLoading: loading || roleLoading,
     isError,
     refetch,
   };

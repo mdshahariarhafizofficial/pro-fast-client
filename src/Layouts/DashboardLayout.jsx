@@ -8,9 +8,9 @@ import useUserRole from "../Hooks/useUserRole";
 import Loading from '../Pages/Loading/Loading'
 
 const DashboardLayout = () => {
-  const {role, loading} = useUserRole();
+  const {role, roleLoading} = useUserRole();
 
-  if (loading) {
+  if (roleLoading) {
     return <Loading></Loading>
   }
 
